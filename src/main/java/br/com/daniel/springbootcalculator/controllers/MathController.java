@@ -18,4 +18,14 @@ public class MathController {
         Double sum = numberController.convertToDouble(numberOne) +  numberController.convertToDouble(numberTwo);
         return sum;
     }
+
+    @RequestMapping(value = "/subtraction/{numberOne}/{numberTwo}", method = RequestMethod.GET)
+    public Double subtraction(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
+        NumberController numberController = new NumberController();
+        if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
+            throw new Exception();
+        }
+        Double subtraction = numberController.convertToDouble(numberOne) -  numberController.convertToDouble(numberTwo);
+        return subtraction;
+    }
 }
