@@ -1,6 +1,8 @@
 package br.com.daniel.springbootcalculator.controllers;
 
 import br.com.daniel.springbootcalculator.converters.NumberController;
+import br.com.daniel.springbootcalculator.exceptions.DivisionByZeroException;
+import br.com.daniel.springbootcalculator.exceptions.InvalidNumberException;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -10,10 +12,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class MathController {
 
     @RequestMapping(value = "/sum/{numberOne}/{numberTwo}", method = RequestMethod.GET)
-    public Double sum(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
+    public Double sum(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         Double sum = numberController.convertToDouble(numberOne) +  numberController.convertToDouble(numberTwo);
         return sum;
@@ -23,7 +25,7 @@ public class MathController {
     public Double subtraction(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         Double subtraction = numberController.convertToDouble(numberOne) -  numberController.convertToDouble(numberTwo);
         return subtraction;
@@ -33,7 +35,7 @@ public class MathController {
     public Double multiplication(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         Double multiplication = numberController.convertToDouble(numberOne) *  numberController.convertToDouble(numberTwo);
         return multiplication;
@@ -43,10 +45,10 @@ public class MathController {
     public Double division(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         if (numberController.convertToDouble(numberTwo) == 0) {
-            throw new Exception();
+            throw new DivisionByZeroException("Division by zero is not allowed", 400);
         }
         Double division = numberController.convertToDouble(numberOne) /  numberController.convertToDouble(numberTwo);
         return division;
@@ -56,7 +58,7 @@ public class MathController {
     public Double mean(@PathVariable("numberOne") String numberOne, @PathVariable("numberTwo") String numberTwo) throws Exception {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(numberOne) || !numberController.isNumeric(numberTwo)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         Double mean = (numberController.convertToDouble(numberOne) +  numberController.convertToDouble(numberTwo)) / 2;
         return mean;
@@ -66,7 +68,7 @@ public class MathController {
     public Double squareRoot(@PathVariable("number") String number) throws Exception {
         NumberController numberController = new NumberController();
         if (!numberController.isNumeric(number)) {
-            throw new Exception();
+            throw new InvalidNumberException("Letters are not allowed in calculator operations", 400);
         }
         Double squareRoot = Math.sqrt(numberController.convertToDouble(number));
         return squareRoot;
